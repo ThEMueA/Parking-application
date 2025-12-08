@@ -49,6 +49,9 @@
 
 <img width="396" height="636" alt="image" src="https://github.com/user-attachments/assets/86d9b3ff-698e-4d81-b362-5f8cb6ee2fc1" />
 
+<img width="751" height="340" alt="image" src="https://github.com/user-attachments/assets/eeefa28d-9b1f-4a27-98e7-799b890df3bd" />
+
+
 
 
  # APK
