@@ -29,6 +29,7 @@ class ServiceSMS: LifecycleService() {
             while (System.currentTimeMillis() < stopTime) {
                 sendSMS(smsNumber, message)
                 delay(3600000) // 1 hour
+                 //delay(30000) //30 sec
             }
             stopSelf()
         }

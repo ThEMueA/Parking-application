@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.icu.text.SelectFormat
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
@@ -13,6 +14,9 @@ import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class MainActivity : AppCompatActivity() {
 
@@ -53,8 +57,23 @@ class MainActivity : AppCompatActivity() {
             spinnerSms.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, smsTitles)
         })
 
-        // Hours spinner (1-24)
-        val hours = (1..10).map { it.toString() }
+
+
+        val HOUR = 60 * 60 * 1000L
+        val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
+
+        val hours = (1..10).map { h ->
+            val futureTime = System.currentTimeMillis() + h * HOUR
+            val timeStr = sdf.format(Date(futureTime))
+            if(h==1){"$h hour/   valid until $timeStr" }
+             else{"$h hours/   valid until $timeStr"}
+        }
+
+
+      /*  val hourss = (1..10).map { h -> "f"+h }
+        hourss.size*/
+
+
         spinnerTime.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, hours)
 
 
@@ -75,7 +94,7 @@ class MainActivity : AppCompatActivity() {
 
                 val selectedCarIndex = spinnerCars.selectedItemPosition
                 val selectedSmsIndex = spinnerSms.selectedItemPosition
-                val selectedHours = spinnerTime.selectedItem.toString().toIntOrNull() ?: 1
+                val selectedHours = spinnerTime.selectedItemPosition
 
                 if (selectedCarIndex < 0 || selectedSmsIndex < 0) {
                     return@setOnClickListener
@@ -83,13 +102,13 @@ class MainActivity : AppCompatActivity() {
 
                 val car = carList[selectedCarIndex]
                 val sms = smsList[selectedSmsIndex]
-
+                val hours = selectedHours+1;
 
 
 
                 if(switch==false) {
                     if (checkSmsPermission() == true) {
-                        startSMSService(sms.smsNumber, selectedHours, car.carNumber)
+                        startSMSService(sms.smsNumber, hours, car.carNumber)
                     }
                     startB.text="STOP SERVICE"; switch=true;
                 }
