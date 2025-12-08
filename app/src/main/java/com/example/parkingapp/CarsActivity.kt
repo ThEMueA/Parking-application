@@ -28,7 +28,7 @@ class CarsActivity :AppCompatActivity(),CarClickInterface, CarDeleteInterface {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_cars)
-        btnNew = findViewById(R.id.btnNewCar)
+            btnNew = findViewById(R.id.btnNewCar)
         btnNew.setOnClickListener {
             val intent = Intent(this, AddEditCarActivity::class.java)
             startActivity(intent)
