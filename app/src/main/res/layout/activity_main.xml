@@ -2,38 +2,122 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!--recycler view for displaying all notes-->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/notesRV"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="5dp"
+    <!-- First Spinner -->
+
+    <!-- Second Spinner -->
+
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="110dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="12dp"
+        android:text="Select Car"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerCars"
+        app:layout_constraintStart_toStartOf="@+id/spinnerCars" />
+
+    <Spinner
+        android:id="@+id/spinnerCars"
+        android:layout_width="343dp"
+        android:layout_height="60dp"
+        android:spinnerMode="dropdown"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.441"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:listitem="@layout/note_rv_item" />
+        app:layout_constraintVertical_bias="0.091" />
 
-    <!--fab for adding a new note-->
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/idFAB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="20dp"
-        android:src="@drawable/ic_add"
-        app:backgroundTint="@color/black"
+    <Spinner
+        android:id="@+id/spinnerSms"
+        android:layout_width="343dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="28dp"
+        android:spinnerMode="dropdown"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:tint="@color/white" />
+        app:layout_constraintHorizontal_bias="0.441"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCars"
+        app:layout_constraintVertical_bias="0.044" />
 
+    <Spinner
+        android:id="@+id/spinnerHours"
+        android:layout_width="343dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="44dp"
+        android:spinnerMode="dropdown"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.441"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerSms"
+        app:layout_constraintVertical_bias="0.041" />
 
+    <Button
+        android:id="@+id/btnStart"
+        android:layout_width="340dp"
+        android:layout_height="85dp"
+        android:layout_marginStart="32dp"
+        android:backgroundTint="@color/black"
+        android:text="START SERVICE"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.076"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.608" />
 
+    <Button
+        android:id="@+id/carB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="Edit cars"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/button3"
+        app:layout_constraintHorizontal_bias="0.022"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.711" />
 
+    <Button
+        android:id="@+id/smsB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit Sms"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.882"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.711" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="110dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="12dp"
+        android:text="Select hours"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerHours"
+        app:layout_constraintStart_toStartOf="@+id/spinnerHours" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="110dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="12dp"
+        android:text="Select parking"
+        app:layout_constraintBottom_toTopOf="@+id/spinnerSms"
+        app:layout_constraintStart_toStartOf="@+id/spinnerSms" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/etCarTitle"
+        android:layout_width="match_parent"
+        android:layout_height="63dp"
+        android:hint="Car Title" />
+
+    <EditText
+        android:id="@+id/etCarNumber"
+        android:layout_width="match_parent"
+        android:layout_height="71dp"
+        android:hint="Car Number" />
+
+    <EditText
+        android:id="@+id/etCarOwner"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:hint="Owner Name" />
+
+    <Button
+        android:id="@+id/btnSaveCar"
+        android:layout_width="match_parent"
+        android:layout_height="79dp"
+        android:layout_marginTop="24dp"
+        android:text="Save" />
+</LinearLayout>

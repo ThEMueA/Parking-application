@@ -3,80 +3,160 @@ package com.example.parkingapp
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import com.google.android.material.floatingactionbutton.FloatingActionButton
+import android.Manifest
 import android.content.Intent
-import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import android.content.pm.PackageManager
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.Spinner
+import androidx.activity.viewModels
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 
-class MainActivity : AppCompatActivity(),NoteClickInterface, NoteClickDeleteInterface {
+class MainActivity : AppCompatActivity() {
 
     // recycler view, exit text, button and view model.
-    private lateinit var viewModel: NoteViewModel
-    private lateinit var notesRV: RecyclerView
-    private lateinit var addFAB: FloatingActionButton
+
+     private lateinit var spinnerCars: Spinner
+     private lateinit var spinnerSms: Spinner
+     private lateinit var spinnerTime: Spinner
+    private var carList =  listOf<Car>()
+    private var smsList =  listOf<Sms>()
+
+    private val csViewModel: CSViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        notesRV = findViewById(R.id.notesRV)
-        addFAB = findViewById(R.id.idFAB)
+         spinnerCars = findViewById(R.id.spinnerCars)
+         spinnerSms =  findViewById(R.id.spinnerSms)
+        spinnerTime = findViewById(R.id.spinnerHours)
 
 
-        notesRV.layoutManager = LinearLayoutManager(this)
-        val noteRVAdapter = NoteRVAdapter(this, this)
+       //var a = CSViewModel(application)
 
-        notesRV.adapter = noteRVAdapter
 
-        // on below line we are initializing our view modal.
-        viewModel = ViewModelProvider(
-            this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(application)
-        )[NoteViewModel::class.java]
+        // Load Cars
+        csViewModel.allCars.observe(this, Observer { cars ->
+            carList = cars
+            val carTitles = cars.map { it.carTitle }
+            spinnerCars.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, carTitles)
+        })
 
-        // on below line we are calling all notes method from
-        // our view modal class to observer the changes on list.
-        viewModel.allNotes.observe(this) { list ->
-            list?.let {
+        // Load SMS
+        csViewModel.allSms.observe(this, Observer { sms ->
+            smsList = sms
+            val smsTitles = sms.map { it.smsTitle }
+            spinnerSms.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, smsTitles)
+        })
 
-                // on below line we are updating our list.
-                noteRVAdapter.updateList(it)
+        // Hours spinner (1-24)
+        val hours = (1..10).map { it.toString() }
+        spinnerTime.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, hours)
+
+
+
+
+
+
+
+
+
+        var switch =  false
+        var startB = findViewById<Button>(R.id.btnStart)
+        var carB = findViewById<Button>(R.id.carB)
+        var smsB = findViewById<Button>(R.id.smsB)
+
+
+            startB.setOnClickListener{
+
+                val selectedCarIndex = spinnerCars.selectedItemPosition
+                val selectedSmsIndex = spinnerSms.selectedItemPosition
+                val selectedHours = spinnerTime.selectedItem.toString().toIntOrNull() ?: 1
+
+                if (selectedCarIndex < 0 || selectedSmsIndex < 0) {
+                    return@setOnClickListener
+                }
+
+                val car = carList[selectedCarIndex]
+                val sms = smsList[selectedSmsIndex]
+
+
+
+
+                if(switch==false) {
+                    if (checkSmsPermission() == true) {
+                        startSMSService(sms.smsNumber, selectedHours, car.carNumber)
+                    }
+                    startB.text="STOP SERVICE"; switch=true;
+                }
+                else{
+                    stopSMSService(); startB.text="START SERVICE"; switch=false;
+                }
             }
-        }
-        addFAB.setOnClickListener {
 
-            // adding a click listener for fab button and
-            // opening a new intent to add a new note.
-            val intent = Intent(this@MainActivity, AddEditNoteActivity::class.java)
-            startActivity(intent)
-            this.finish()
+
+        carB.setOnClickListener {
+            var i = Intent(this , CarsActivity::class.java)
+            startActivity(i)
+            startActivity(i)
         }
+
+        smsB.setOnClickListener {
+            var i = Intent(this , SMSActivity::class.java)
+            startActivity(i)
+            startActivity(i)
+        }
+
+
     }
 
-    override fun onNoteClick(note: Note) {
 
-        // opening a new intent and passing a data to it.
-        val intent = Intent(this@MainActivity, AddEditNoteActivity::class.java)
-        intent.putExtra("noteType", "Edit")
-        intent.putExtra("noteTitle", note.noteTitle)
-        intent.putExtra("noteDescription", note.noteDescribtion)
-        intent.putExtra("noteId", note.id)
-        startActivity(intent)
-        this.finish()
+    //SMS SERVICE
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+////checks permission
+    private fun checkSmsPermission(): Boolean {
+        return if (ContextCompat.checkSelfPermission(this, Manifest.permission.SEND_SMS)
+            != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                this, arrayOf(Manifest.permission.SEND_SMS), 100
+            )
+            false
+        } else true
     }
 
-    override fun onDeleteIconClick(note: Note) {
+///Start the service
+    private fun startSMSService(smsNumber: String, stopAfterHours: Int, message: String) {
+        val intent = Intent(this, ServiceSMS::class.java)
+        intent.putExtra("smsNumber", smsNumber)
+        intent.putExtra("message", message) // your message
+        intent.putExtra("stopTime", System.currentTimeMillis() + stopAfterHours * 3600000)
 
-        // in on note click method we are calling delete
-        // method from our viw modal to delete our not.
-        viewModel.deleteNote(note)
-
-        //displaying a toast message
-        Toast.makeText(this, "${note.noteTitle} Deleted", Toast.LENGTH_LONG).show()
+        ContextCompat.startForegroundService(this, intent)
+    }
+///Stops the service
+    private fun stopSMSService(){
+        val intent = Intent(this, ServiceSMS::class.java)
+        stopService(intent);
     }
 }
