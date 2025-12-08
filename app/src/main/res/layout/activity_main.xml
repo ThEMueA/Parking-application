@@ -4,11 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:colorBackground"
     tools:context=".MainActivity">
 
-    <!-- First Spinner -->
 
-    <!-- Second Spinner -->
 
 
     <TextView
@@ -82,7 +81,6 @@
         android:layout_marginStart="32dp"
         android:text="Edit cars"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button3"
         app:layout_constraintHorizontal_bias="0.022"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

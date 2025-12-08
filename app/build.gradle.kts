@@ -41,7 +41,7 @@ android {
 dependencies {
     val lifecycle_version = "2.10.0"
     val arch_version = "2.2.0"
-
+    debugImplementation ("com.squareup.leakcanary:leakcanary-android:2.12")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_version")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version")
